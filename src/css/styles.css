@@ -1031,3 +1031,71 @@ img {
 .header {
   z-index: 100;
 }
+/* --- Legal Pages Styling --- */
+.pages {
+  padding-top: 140px; /* Отступ от фиксированного хедера */
+  padding-bottom: 80px;
+  min-height: 100vh;
+}
+
+.legal-content {
+  max-width: 800px; /* Ограничиваем ширину для удобного чтения */
+  margin: 0 auto;
+  background: white;
+  padding: 40px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  border: 1px solid #E2E8F0;
+}
+
+.legal-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #E2E8F0;
+  color: var(--color-heading);
+}
+
+.legal-content h2 {
+  font-size: 1.5rem;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  color: var(--color-primary); /* Акцентный цвет заголовков */
+}
+
+.legal-content p {
+  margin-bottom: 16px;
+  color: var(--color-text);
+  line-height: 1.7;
+}
+
+.legal-content ul {
+  list-style: disc; /* Возвращаем точки */
+  padding-left: 20px;
+  margin-bottom: 24px;
+}
+
+.legal-content li {
+  margin-bottom: 10px;
+  color: var(--color-text);
+}
+
+.legal-content a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.legal-content a:hover {
+  color: var(--color-accent);
+}
+
+@media (max-width: 768px) {
+  .legal-content {
+      padding: 24px;
+  }
+  .legal-content h1 {
+      font-size: 1.8rem;
+  }
+}
