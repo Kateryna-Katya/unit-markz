@@ -200,67 +200,80 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
 
-  // ==========================================
-  // 7. ФОРМА КОНТАКТОВ
-  // ==========================================
-  const form = document.getElementById('contactForm');
+ // ==========================================
+    // 7. ФОРМА КОНТАКТОВ (СТРОГАЯ ВАЛИДАЦИЯ)
+    // ==========================================
+    const form = document.getElementById('contactForm');
 
-  if (form) {
-      const phoneInput = document.getElementById('phone');
-      const captchaLabel = document.getElementById('captchaLabel');
-      const captchaInput = document.getElementById('captchaInput');
-      const formSuccess = document.getElementById('formSuccess');
+    if (form) {
+        const phoneInput = document.getElementById('phone');
+        const captchaLabel = document.getElementById('captchaLabel');
+        const captchaInput = document.getElementById('captchaInput');
+        const consentCheckbox = document.getElementById('consent'); // Получаем чекбокс
+        const formSuccess = document.getElementById('formSuccess');
 
-      // Только цифры для телефона
-      phoneInput.addEventListener('input', (e) => {
-          e.target.value = e.target.value.replace(/[^0-9+\s]/g, '');
-      });
+        // Только цифры для телефона
+        phoneInput.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^0-9+\s]/g, '');
+        });
 
-      // Капча
-      let num1 = Math.floor(Math.random() * 10) + 1;
-      let num2 = Math.floor(Math.random() * 10) + 1;
-      captchaLabel.textContent = `Сколько будет ${num1} + ${num2}?`;
+        // Капча
+        let num1 = Math.floor(Math.random() * 10) + 1;
+        let num2 = Math.floor(Math.random() * 10) + 1;
+        captchaLabel.textContent = `Сколько будет ${num1} + ${num2}?`;
 
-      form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          let isValid = true;
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let isValid = true;
 
-          // Очистка ошибок
-          form.querySelectorAll('.form-group').forEach(g => g.classList.remove('error'));
+            // 1. Очистка всех старых ошибок
+            form.querySelectorAll('.form-group').forEach(g => g.classList.remove('error'));
+            consentCheckbox.closest('.form-checkbox').classList.remove('error'); // Сброс ошибки чекбокса
 
-          // Валидация пустых полей
-          form.querySelectorAll('input[required]').forEach(input => {
-              if (!input.value.trim()) {
-                  input.closest('.form-group').classList.add('error');
-                  isValid = false;
-              }
-          });
+            // 2. Валидация текстовых полей
+            form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="number"]').forEach(input => {
+                if (!input.value.trim()) {
+                    input.closest('.form-group').classList.add('error');
+                    isValid = false;
+                }
+            });
 
-          // Проверка капчи
-          if (parseInt(captchaInput.value) !== (num1 + num2)) {
-              captchaInput.closest('.form-group').classList.add('error');
-              isValid = false;
-          }
+            // 3. ВАЖНО: Строгая проверка чекбокса
+            if (!consentCheckbox.checked) {
+                consentCheckbox.closest('.form-checkbox').classList.add('error');
+                isValid = false;
+            }
 
-          if (isValid) {
-              const btn = form.querySelector('button[type="submit"]');
-              const originalText = btn.textContent;
+            // 4. Проверка капчи
+            if (parseInt(captchaInput.value) !== (num1 + num2)) {
+                captchaInput.closest('.form-group').classList.add('error');
+                isValid = false;
+            }
 
-              btn.textContent = 'Отправка...';
-              btn.disabled = true;
+            // Если всё верно — отправляем
+            if (isValid) {
+                const btn = form.querySelector('button[type="submit"]');
+                const originalText = btn.textContent;
 
-              setTimeout(() => {
-                  formSuccess.classList.add('active');
-                  form.reset();
-                  btn.textContent = originalText;
-                  btn.disabled = false;
+                btn.textContent = 'Отправка...';
+                btn.disabled = true;
 
-                  // Новый пример
-                  num1 = Math.floor(Math.random() * 10) + 1;
-                  num2 = Math.floor(Math.random() * 10) + 1;
-                  captchaLabel.textContent = `Сколько будет ${num1} + ${num2}?`;
-              }, 1500);
-          }
-      });
+                setTimeout(() => {
+                    formSuccess.classList.add('active');
+                    form.reset();
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+
+                    // Новый пример для капчи
+                    num1 = Math.floor(Math.random() * 10) + 1;
+                    num2 = Math.floor(Math.random() * 10) + 1;
+                    captchaLabel.textContent = `Сколько будет ${num1} + ${num2}?`;
+
+                    // Убираем класс активного окна успеха через 5 сек (опционально)
+                    setTimeout(() => formSuccess.classList.remove('active'), 5000);
+                }, 1500);
+            }
+        });
+    
   }
 });

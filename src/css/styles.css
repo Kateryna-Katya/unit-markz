@@ -957,3 +957,77 @@ img {
   color: var(--color-accent);
   margin-bottom: 20px;
 }
+
+/* --- Checkbox Error State --- */
+.form-checkbox {
+  transition: var(--transition);
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.form-checkbox.error {
+  color: #EF4444; /* Красный текст */
+  background: rgba(239, 68, 68, 0.1); /* Легкий красный фон */
+}
+
+.form-checkbox.error input {
+  outline: 2px solid #EF4444;
+  outline-offset: 2px;
+}
+/* --- Mobile Menu Fix --- */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh; /* Строго на высоту экрана */
+  background-color: var(--color-bg); /* Плотный цвет фона, не прозрачный */
+  z-index: 90; /* Меньше чем у хедера (100), чтобы хедер был поверх */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Выравнивание по верху, а не по центру */
+  padding-top: 100px; /* Отступ сверху, чтобы не слипалось с хедером */
+  padding-bottom: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  overflow-y: auto; /* Добавляем скролл, если меню не влезает */
+
+  /* Скрытое состояние */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.mobile-menu.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mobile-menu__content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  text-align: center;
+  width: 100%;
+}
+
+.mobile-menu__link {
+  font-family: var(--font-heading);
+  font-size: 1.75rem; /* Крупный шрифт для удобства */
+  font-weight: 600;
+  color: var(--color-heading);
+  display: block;
+}
+
+.mobile-menu__link:hover {
+  color: var(--color-primary);
+}
+
+/* Гарантируем, что хедер всегда выше меню */
+.header {
+  z-index: 100;
+}
